@@ -75,7 +75,7 @@ app.post('/api/books', function(request,response) {
 	});
 	book.save( function(err) {
 		if(!err) {
-			return console.log('created');
+			return console.log('Book created');
 		} else {
 			return console.log(err);
 		}
@@ -118,6 +118,7 @@ app.put('/api/books/:id', function(request,response){
 app.delete('/api/books/:id', function(request,response){
 	console.log('Deleting book with id: ' + request.params.id);
 	return BookModel.findById(request.params.id, function(err, book){
+		// TODO need to make sure the 'book' is not null before trying to remove it. 
 		return book.remove( function(err){
 			if(!err) {
 				console.log('Book removed');

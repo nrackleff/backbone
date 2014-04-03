@@ -6,11 +6,11 @@ $(function() {
   app.LibraryView = Backbone.View.extend({
     el: '#books',
 
-    initialize: function( initialBooks ) {
-      this.collection = new app.Library( initialBooks );
+    initialize: function(  ) {
+      this.collection = new app.Library();
       this.collection.fetch({reset: true});
       this.render();
-      this.listenTo(this.collection, 'add', this.renderBook);
+      this.listenTo(this.collection, 'add', this.renderBook); // TODO, only add the book to collection and render if it really got added to database.
       this.listenTo(this.collection, 'reset', this.render);
     },
 
@@ -36,9 +36,11 @@ $(function() {
     addBook: function( e ) {
       e.preventDefault();
       var formData = {};
+      var hasData = false;
       $( '#addBook div' ).children( 'input' ).each( function( i, el ) {
-        if( $(el).val() != '' ) {
-          if(el.id === 'keywords'){
+        if( $(el).val() != '' ) 
+        {
+          if(el.id === 'keywords') {
             formData[el.id] = [];
             _.each($(el).val().split(' '), function( keyword ) {
               formData[el.id].push({'keyword': keyword});
@@ -48,12 +50,14 @@ $(function() {
           } else {
             formData[el.id] = $(el).val();
           }
+          hasData = true;
         }
         // Clear input field value
         $(el).val('');
       });
-
-      this.collection.create(formData);
+      if(hasData) {
+        this.collection.create(formData, {wait:true}); //wait:true makes it not add to collection if item is not added to database
+      }
     }
   });
 });

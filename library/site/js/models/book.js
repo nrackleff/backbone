@@ -7,7 +7,7 @@ app.Book = Backbone.Model.extend({
     coverImage: 'img/placeholder.png',
     title: 'No title',
     author: 'Unknown',
-    releaseDate: 'Unknown',
+    releaseDate: '01/01/2014', // this was originally set to 'unknown', but throws and error if book is submitted without a date.
     keywords: 'None'
   },
 
